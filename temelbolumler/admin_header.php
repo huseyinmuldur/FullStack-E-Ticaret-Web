@@ -33,11 +33,11 @@
 
       <div class="profile">
          <?php
-            $select_profile = $conn->prepare("SELECT * FROM `admins` WHERE id = ?");
+            $select_profile = $conn->prepare("SELECT * FROM `adminler` WHERE id = ?");
             $select_profile->execute([$admin_id]);
             $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
          ?>
-         <p><?= $fetch_profile['name']; ?></p>
+         <p><?= $fetch_profile['isim']; ?></p>
          <a href="../admin/profil_guncelleme.php" class="btn">Profili Güncelle</a>
          <div class="flex-btn">
             <a href="../admin/admin_kayit.php" class="option-btn">Kayıt Ol</a>

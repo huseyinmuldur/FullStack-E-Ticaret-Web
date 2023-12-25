@@ -12,13 +12,13 @@ if(isset($_SESSION['user_id'])){
 
 if(isset($_POST['submit'])){
 
-   $name = $_POST['name'];
-   $name = filter_var($name, FILTER_SANITIZE_STRING);
+   $isim = $_POST['isim'];
+   $isim = filter_var($isim, FILTER_SANITIZE_STRING);
    $email = $_POST['email'];
    $email = filter_var($email, FILTER_SANITIZE_STRING);
 
-   $update_profile = $conn->prepare("UPDATE `users` SET name = ?, email = ? WHERE id = ?");
-   $update_profile->execute([$name, $email, $user_id]);
+   $update_profile = $conn->prepare("UPDATE `kullanicilar` SET isim = ?, email = ? WHERE id = ?");
+   $update_profile->execute([$isim, $email, $user_id]);
 
    $empty_pass = '123456789';
    $prev_pass = $_POST['prev_pass'];
@@ -37,7 +37,7 @@ if(isset($_POST['submit'])){
       $message[] = 'Yeni şifreler eşleşmiyor!';
    }else{
       if($new_pass != $empty_pass){
-         $update_admin_pass = $conn->prepare("UPDATE `users` SET password = ? WHERE id = ?");
+         $update_admin_pass = $conn->prepare("UPDATE `kullanicilar` SET sifre = ? WHERE id = ?");
          $update_admin_pass->execute([$cpass, $user_id]);
          $message[] = 'Şifreniz başarıyla güncellendi!';
       }else{
@@ -72,8 +72,8 @@ if(isset($_POST['submit'])){
 
    <form action="" method="post">
       <h3>PROFİLİ GÜNCELLE</h3>
-      <input type="hidden" name="prev_pass" value="<?= $fetch_profile["password"]; ?>">
-      <input type="text" name="name" required placeholder="Kullanıcı adınızı girin" maxlength="20"  class="box" value="<?= $fetch_profile["name"]; ?>">
+      <input type="hidden" name="prev_pass" value="<?= $fetch_profile["sifre"]; ?>">
+      <input type="text" name="isim" required placeholder="Kullanıcı adınızı girin" maxlength="20"  class="box" value="<?= $fetch_profile["isim"]; ?>">
       <input type="email" name="email" required placeholder="Email adresinizi girin" maxlength="50"  class="box" oninput="this.value = this.value.replace(/\s/g, '')" value="<?= $fetch_profile["email"]; ?>">
       <input type="password" name="old_pass" placeholder="Eski şifreniz girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
       <input type="password" name="new_pass" placeholder="Yeni şifrenizi girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">

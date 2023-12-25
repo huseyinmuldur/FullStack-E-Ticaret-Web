@@ -12,8 +12,8 @@ if(!isset($admin_id)){
 
 if(isset($_GET['delete'])){
    $delete_id = $_GET['delete'];
-   $delete_admins = $conn->prepare("DELETE FROM `admins` WHERE id = ?");
-   $delete_admins->execute([$delete_id]);
+   $delete_admin = $conn->prepare("DELETE FROM `adminler` WHERE id = ?");
+   $delete_admin->execute([$delete_id]);
    header('location:admin_hesabi.php');
 }
 
@@ -48,14 +48,14 @@ if(isset($_GET['delete'])){
    </div>
 
    <?php
-      $select_accounts = $conn->prepare("SELECT * FROM `admins`");
+      $select_accounts = $conn->prepare("SELECT * FROM `adminler`");
       $select_accounts->execute();
       if($select_accounts->rowCount() > 0){
          while($fetch_accounts = $select_accounts->fetch(PDO::FETCH_ASSOC)){   
    ?>
    <div class="box">
       <p> admin id : <span><?= $fetch_accounts['id']; ?></span> </p>
-      <p> admin ismi : <span><?= $fetch_accounts['name']; ?></span> </p>
+      <p> admin ismi : <span><?= $fetch_accounts['isim']; ?></span> </p>
       <div class="flex-btn">
          <a href="admin_hesabi.php?delete=<?= $fetch_accounts['id']; ?>" onclick="return confirm('Bu hesap silinsin mi?')" class="delete-btn">Sil</a>
          <?php
@@ -75,17 +75,6 @@ if(isset($_GET['delete'])){
    </div>
 
 </section>
-
-
-
-
-
-
-
-
-
-
-
 
 <script src="../js/admin_script.js"></script>
    

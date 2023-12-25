@@ -12,27 +12,27 @@ if(isset($_SESSION['user_id'])){
 
 if(isset($_POST['submit'])){
 
-   $name = $_POST['name'];
-   $name = filter_var($name, FILTER_SANITIZE_STRING);
+   $isim = $_POST['isim'];
+   $isim = filter_var($isim, FILTER_SANITIZE_STRING);
    $email = $_POST['email'];
    $email = filter_var($email, FILTER_SANITIZE_STRING);
-   $pass = sha1($_POST['pass']);
-   $pass = filter_var($pass, FILTER_SANITIZE_STRING);
+   $sifre = sha1($_POST['sifre']);
+   $sifre = filter_var($sifre, FILTER_SANITIZE_STRING);
    $cpass = sha1($_POST['cpass']);
    $cpass = filter_var($cpass, FILTER_SANITIZE_STRING);
 
-   $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ?");
+   $select_user = $conn->prepare("SELECT * FROM `kullanicilar` WHERE email = ?");
    $select_user->execute([$email,]);
    $row = $select_user->fetch(PDO::FETCH_ASSOC);
 
    if($select_user->rowCount() > 0){
       $message[] = 'Bu email zaten var!';
    }else{
-      if($pass != $cpass){
+      if($sifre != $cpass){
          $message[] = 'Şifreniz eşleşmiyor';
       }else{
-         $insert_user = $conn->prepare("INSERT INTO `users`(name, email, password) VALUES(?,?,?)");
-         $insert_user->execute([$name, $email, $cpass]);
+         $insert_user = $conn->prepare("INSERT INTO `kullanicilar`(isim, email, sifre) VALUES(?,?,?)");
+         $insert_user->execute([$isim, $email, $cpass]);
          $message[] = 'Başarıyla kayıt olundu, şimdi giriş yapın!';
       }
    }
@@ -64,9 +64,9 @@ if(isset($_POST['submit'])){
 
    <form action="" method="post">
       <h3>KAYIT OLMA</h3>
-      <input type="text" name="name" required placeholder="Kullanıcı adınız girin" maxlength="20"  class="box">
+      <input type="text" name="isim" required placeholder="Kullanıcı adınız girin" maxlength="20"  class="box">
       <input type="email" name="email" required placeholder="Email adresinizi girin" maxlength="50"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
-      <input type="password" name="pass" required placeholder="Şifrenizi girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
+      <input type="password" name="sifre" required placeholder="Şifrenizi girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
       <input type="password" name="cpass" required placeholder="Şİfrenizi tekrar girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
       <input type="submit" value="Kayıt Ol" class="btn" name="submit">
       <p>Hesabınız var mı?</p>

@@ -12,16 +12,16 @@ if(!isset($admin_id)){
 
 if(isset($_POST['update_payment'])){
    $order_id = $_POST['order_id'];
-   $payment_status = $_POST['payment_status'];
-   $payment_status = filter_var($payment_status, FILTER_SANITIZE_STRING);
-   $update_payment = $conn->prepare("UPDATE `orders` SET payment_status = ? WHERE id = ?");
-   $update_payment->execute([$payment_status, $order_id]);
+   $odeme_durumu = $_POST['odeme_durumu'];
+   $odeme_durumu = filter_var($odeme_durumu, FILTER_SANITIZE_STRING);
+   $update_payment = $conn->prepare("UPDATE `siparisler` SET odeme_durumu = ? WHERE id = ?");
+   $update_payment->execute([$odeme_durumu, $order_id]);
    $message[] = 'Ödeme durumu güncellendi!';
 }
 
 if(isset($_GET['delete'])){
    $delete_id = $_GET['delete'];
-   $delete_order = $conn->prepare("DELETE FROM `orders` WHERE id = ?");
+   $delete_order = $conn->prepare("DELETE FROM `siparisler` WHERE id = ?");
    $delete_order->execute([$delete_id]);
    header('location:siparisler.php');
 }
@@ -52,24 +52,24 @@ if(isset($_GET['delete'])){
 <div class="box-container">
 
    <?php
-      $select_orders = $conn->prepare("SELECT * FROM `orders`");
+      $select_orders = $conn->prepare("SELECT * FROM `siparisler`");
       $select_orders->execute();
       if($select_orders->rowCount() > 0){
          while($fetch_orders = $select_orders->fetch(PDO::FETCH_ASSOC)){
    ?>
    <div class="box">
-      <p> Sipariş Tarihi : <span><?= $fetch_orders['placed_on']; ?></span> </p>
-      <p> İsim : <span><?= $fetch_orders['name']; ?></span> </p>
-      <p> Numara : <span><?= $fetch_orders['number']; ?></span> </p>
-      <p> Adres : <span><?= $fetch_orders['address']; ?></span> </p>
-      <p> TopLam Ürün : <span><?= $fetch_orders['total_products']; ?></span> </p>
-      <p> Toplam Ücret : <span><?= $fetch_orders['total_price']; ?>TL</span> </p>
-      <p> Ödeme Yöntemi : <span><?= $fetch_orders['method']; ?></span> </p>
+      <p> Sipariş Tarihi : <span><?= $fetch_orders['siparis_tarihi']; ?></span> </p>
+      <p> İsim : <span><?= $fetch_orders['isim']; ?></span> </p>
+      <p> Numara : <span><?= $fetch_orders['numara']; ?></span> </p>
+      <p> Adres : <span><?= $fetch_orders['adres']; ?></span> </p>
+      <p> TopLam Ürün : <span><?= $fetch_orders['toplam_urun']; ?></span> </p>
+      <p> Toplam Ücret : <span><?= $fetch_orders['toplam_ucret']; ?>TL</span> </p>
+      <p> Ödeme Yöntemi : <span><?= $fetch_orders['odeme_yontemi']; ?></span> </p>
       <form action="" method="post">
          <input type="hidden" name="order_id" value="<?= $fetch_orders['id']; ?>">
-         <select name="payment_status" class="select">
+         <select name="odeme_durumu" class="select">
             <option selected disabled></option>
-            <option value="pending">Beklemede</option>
+            <option value="bekleme">Beklemede</option>
             <option value="completed">Tamamlandı</option>
          </select>
         <div class="flex-btn">

@@ -12,15 +12,15 @@ if(!isset($admin_id)){
 
 if(isset($_POST['submit'])){
 
-   $name = $_POST['name'];
-   $name = filter_var($name, FILTER_SANITIZE_STRING);
-   $pass = sha1($_POST['pass']);
-   $pass = filter_var($pass, FILTER_SANITIZE_STRING);
+   $isim = $_POST['isim'];
+   $isim = filter_var($isim, FILTER_SANITIZE_STRING);
+   $sifre = sha1($_POST['sifre']);
+   $sifre = filter_var($sifre, FILTER_SANITIZE_STRING);
    $cpass = sha1($_POST['cpass']);
    $cpass = filter_var($cpass, FILTER_SANITIZE_STRING);
 
-   $select_admin = $conn->prepare("SELECT * FROM `admins` WHERE name = ?");
-   $select_admin->execute([$name]);
+   $select_admin = $conn->prepare("SELECT * FROM `adminler` WHERE isim = ?");
+   $select_admin->execute([$isim]);
 
    if($select_admin->rowCount() > 0){
       $message[] = 'Kullanıcı Adı Zaten Mevcut';
@@ -28,8 +28,8 @@ if(isset($_POST['submit'])){
       if($pass != $cpass){
          $message[] = 'Şifreler aynı değil!';
       }else{
-         $insert_admin = $conn->prepare("INSERT INTO `admins`(name, password) VALUES(?,?)");
-         $insert_admin->execute([$name, $cpass]);
+         $insert_admin = $conn->prepare("INSERT INTO `adminler`(isim, sifre) VALUES(?,?)");
+         $insert_admin->execute([$isim, $sifre]);
          $message[] = 'Yeni Admin Başarıyla Kayıt Edildi!';
       }
    }
@@ -59,23 +59,13 @@ if(isset($_POST['submit'])){
 
    <form action="" method="post">
       <h3>ŞİMDİ Kayıt OL</h3>
-      <input type="text" name="name" required placeholder="Kullanıcı adınızı girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
-      <input type="password" name="pass" required placeholder="Şifrenizi girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
+      <input type="text" name="isim" required placeholder="Kullanıcı adınızı girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
+      <input type="password" name="sifre" required placeholder="Şifrenizi girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
       <input type="password" name="cpass" required placeholder="Şifrenizi tekrar girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
       <input type="submit" value="Kayıt Olun" class="btn" name="submit">
    </form>
 
 </section>
-
-
-
-
-
-
-
-
-
-
 
 
 <script src="../js/admin_script.js"></script>

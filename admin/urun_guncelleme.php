@@ -12,73 +12,73 @@ if(!isset($admin_id)){
 
 if(isset($_POST['update'])){
 
-   $pid = $_POST['pid'];
-   $name = $_POST['name'];
-   $name = filter_var($name, FILTER_SANITIZE_STRING);
-   $price = $_POST['price'];
-   $price = filter_var($price, FILTER_SANITIZE_STRING);
-   $details = $_POST['details'];
-   $details = filter_var($details, FILTER_SANITIZE_STRING);
+   $urun_id = $_POST['urun_id'];
+   $isim = $_POST['isim'];
+   $isim = filter_var($isim, FILTER_SANITIZE_STRING);
+   $fiyat = $_POST['fiyat'];
+   $fiyat = filter_var($fiyat, FILTER_SANITIZE_STRING);
+   $detaylar = $_POST['detaylar'];
+   $detaylar = filter_var($detaylar, FILTER_SANITIZE_STRING);
 
-   $update_product = $conn->prepare("UPDATE `products` SET name = ?, price = ?, details = ? WHERE id = ?");
-   $update_product->execute([$name, $price, $details, $pid]);
+   $update_product = $conn->prepare("UPDATE `urunler` SET isim = ?, fiyat = ?, detaylar = ? WHERE id = ?");
+   $update_product->execute([$isim, $fiyat, $detaylar, $urun_id]);
 
-   $message[] = 'product updated successfully!';
+   $mesaj[] = 'Ürün başarıyla güncellendi!';
 
    $old_image_01 = $_POST['old_image_01'];
-   $image_01 = $_FILES['image_01']['name'];
-   $image_01 = filter_var($image_01, FILTER_SANITIZE_STRING);
-   $image_size_01 = $_FILES['image_01']['size'];
-   $image_tmp_name_01 = $_FILES['image_01']['tmp_name'];
-   $image_folder_01 = '../uploaded_img/'.$image_01;
+   $resim1 = $_FILES['resim1']['name'];
+   $resim1 = filter_var($resim1, FILTER_SANITIZE_STRING);
+   $image_size_01 = $_FILES['resim1']['size'];
+   $image_tmp_name_01 = $_FILES['resim1']['tmp_name'];
+   $image_folder_01 = '../uploaded_img/'.$resim1;
 
-   if(!empty($image_01)){
+   if(!empty($resim1)){
       if($image_size_01 > 2000000){
-         $message[] = 'image size is too large!';
+         $message[] = 'Resim boyutu yüksek!';
       }else{
-         $update_image_01 = $conn->prepare("UPDATE `products` SET image_01 = ? WHERE id = ?");
-         $update_image_01->execute([$image_01, $pid]);
+         $update_image_01 = $conn->prepare("UPDATE `urunler` SET resim1 = ? WHERE id = ?");
+         $update_image_01->execute([$resim1, $urun_id]);
          move_uploaded_file($image_tmp_name_01, $image_folder_01);
          unlink('../uploaded_img/'.$old_image_01);
-         $message[] = 'image 01 updated successfully!';
+         $mesaj[] = 'Resim 1 başarıyla güncellendi!';
       }
    }
 
    $old_image_02 = $_POST['old_image_02'];
-   $image_02 = $_FILES['image_02']['name'];
-   $image_02 = filter_var($image_02, FILTER_SANITIZE_STRING);
-   $image_size_02 = $_FILES['image_02']['size'];
-   $image_tmp_name_02 = $_FILES['image_02']['tmp_name'];
-   $image_folder_02 = '../uploaded_img/'.$image_02;
+   $resim2 = $_FILES['resim2']['isim'];
+   $resim2 = filter_var($resim2, FILTER_SANITIZE_STRING);
+   $image_size_02 = $_FILES['resim2']['size'];
+   $image_tmp_name_02 = $_FILES['resim2']['tmp_name'];
+   $image_folder_02 = '../uploaded_img/'.$resim2;
 
-   if(!empty($image_02)){
+   if(!empty($resim2)){
       if($image_size_02 > 2000000){
-         $message[] = 'image size is too large!';
+         $mesaj[] = 'Resim boyutu yüksek!';
       }else{
-         $update_image_02 = $conn->prepare("UPDATE `products` SET image_02 = ? WHERE id = ?");
-         $update_image_02->execute([$image_02, $pid]);
+         $update_image_02 = $conn->prepare("UPDATE `urunler` SET resim2 = ? WHERE id = ?");
+         $update_image_02->execute([$resim2, $urun_id]);
          move_uploaded_file($image_tmp_name_02, $image_folder_02);
          unlink('../uploaded_img/'.$old_image_02);
-         $message[] = 'image 02 updated successfully!';
+         $mesaj[] = 'Resim 2 başarıyla güncellendi!';
       }
    }
 
    $old_image_03 = $_POST['old_image_03'];
-   $image_03 = $_FILES['image_03']['name'];
-   $image_03 = filter_var($image_03, FILTER_SANITIZE_STRING);
-   $image_size_03 = $_FILES['image_03']['size'];
-   $image_tmp_name_03 = $_FILES['image_03']['tmp_name'];
-   $image_folder_03 = '../uploaded_img/'.$image_03;
+   $resim3 = $_FILES['resim3']['isim'];
+   $resim3 = filter_var($resim3, FILTER_SANITIZE_STRING);
+   $image_size_03 = $_FILES['resim3']['size'];
+   $image_tmp_name_03 = $_FILES['resim3']['tmp_name'];
+   $image_folder_03 = '../uploaded_img/'.$resim3;
 
-   if(!empty($image_03)){
+   if(!empty($resim3)){
       if($image_size_03 > 2000000){
-         $message[] = 'image size is too large!';
+         $mesaj[] = 'Resim boyutu yüksek!';
       }else{
-         $update_image_03 = $conn->prepare("UPDATE `products` SET image_03 = ? WHERE id = ?");
-         $update_image_03->execute([$image_03, $pid]);
+         $update_image_03 = $conn->prepare("UPDATE `urunler` SET resim3 = ? WHERE id = ?");
+         $update_image_03->execute([$resim3, $urun_id]);
          move_uploaded_file($image_tmp_name_03, $image_folder_03);
          unlink('../uploaded_img/'.$old_image_03);
-         $message[] = 'image 03 updated successfully!';
+         $mesaj[] = 'Resim 3 başarıyla güncellendi!';
       }
    }
 
@@ -109,7 +109,7 @@ if(isset($_POST['update'])){
 
    <?php
       $update_id = $_GET['update'];
-      $select_products = $conn->prepare("SELECT * FROM `products` WHERE id = ?");
+      $select_products = $conn->prepare("SELECT * FROM `urunler` WHERE id = ?");
       $select_products->execute([$update_id]);
       if($select_products->rowCount() > 0){
          while($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)){ 
@@ -130,17 +130,17 @@ if(isset($_POST['update'])){
          </div>
       </div>
       <span>Güncel İsim</span>
-      <input type="text" name="name" required class="box" maxlength="100" placeholder="enter product name" value="<?= $fetch_products['name']; ?>">
+      <input type="text" name="name" required class="box" maxlength="100" placeholder="enter product name" value="<?= $fetch_products['isim']; ?>">
       <span>Güncel Fiyat</span>
-      <input type="number" name="price" required class="box" min="0" max="9999999999" placeholder="enter product price" onkeypress="if(this.value.length == 10) return false;" value="<?= $fetch_products['price']; ?>">
+      <input type="number" name="price" required class="box" min="0" max="9999999999" placeholder="enter product price" onkeypress="if(this.value.length == 10) return false;" value="<?= $fetch_products['fiyat']; ?>">
       <span>Güncel Detaylar</span>
-      <textarea name="details" class="box" required cols="30" rows="10"><?= $fetch_products['details']; ?></textarea>
+      <textarea name="details" class="box" required cols="30" rows="10"><?= $fetch_products['detaylar']; ?></textarea>
       <span>Güncel Resim 1</span>
-      <input type="file" name="image_01" accept="image/jpg, image/jpeg, image/png, image/webp" class="box">
+      <input type="file" name="resim1" accept="image/jpg, image/jpeg, image/png, image/webp" class="box">
       <span>Güncel Resim 2</span>
-      <input type="file" name="image_02" accept="image/jpg, image/jpeg, image/png, image/webp" class="box">
+      <input type="file" name="resim2" accept="image/jpg, image/jpeg, image/png, image/webp" class="box">
       <span>Güncel Resim 3</span>
-      <input type="file" name="image_03" accept="image/jpg, image/jpeg, image/png, image/webp" class="box">
+      <input type="file" name="resim3" accept="image/jpg, image/jpeg, image/png, image/webp" class="box">
       <div class="flex-btn">
          <input type="submit" name="update" class="btn" value="Güncelle">
          <a href="urunler.php" class="option-btn">Geri Dön</a>

@@ -1,45 +1,35 @@
 <?php
 
-if(isset($_POST['add_to_cart'])){
+if(isset($_POST['sepete_ekle'])){
 
    if($user_id == ''){
       header('location:user_login.php');
    }else{
 
-      $pid = $_POST['pid'];
-      $pid = filter_var($pid, FILTER_SANITIZE_STRING);
-      $name = $_POST['name'];
-      $name = filter_var($name, FILTER_SANITIZE_STRING);
-      $price = $_POST['price'];
-      $price = filter_var($price, FILTER_SANITIZE_STRING);
-      $image = $_POST['image'];
-      $image = filter_var($image, FILTER_SANITIZE_STRING);
-      $qty = $_POST['qty'];
-      $qty = filter_var($qty, FILTER_SANITIZE_STRING);
+      $urun_id = $_POST['urun_id'];
+      $urun_id = filter_var($urun_id, FILTER_SANITIZE_STRING);
+      $isim = $_POST['isim'];
+      $isim = filter_var($isim, FILTER_SANITIZE_STRING);
+      $fiyat = $_POST['fiyat'];
+      $fiyat = filter_var($fiyat, FILTER_SANITIZE_STRING);
+      $resim = $_POST['resim'];
+      $resim = filter_var($resim, FILTER_SANITIZE_STRING);
+      $adet = $_POST['adet'];
+      $adet = filter_var($adet, FILTER_SANITIZE_STRING);
 
-      $check_cart_numbers = $conn->prepare("SELECT * FROM `cart` WHERE name = ? AND user_id = ?");
-      $check_cart_numbers->execute([$name, $user_id]);
+      $check_cart_numbers = $conn->prepare("SELECT * FROM `sepet` WHERE isim = ? AND user_id = ?");
+      $check_cart_numbers->execute([$isim, $user_id]);
 
       if($check_cart_numbers->rowCount() > 0){
          $message[] = 'Sepete eklendi!';
-      }else{
+      }
 
-         $check_wishlist_numbers = $conn->prepare("SELECT * FROM `wishlist` WHERE name = ? AND user_id = ?");
-         $check_wishlist_numbers->execute([$name, $user_id]);
-
-         if($check_wishlist_numbers->rowCount() > 0){
-            $delete_wishlist = $conn->prepare("DELETE FROM `wishlist` WHERE name = ? AND user_id = ?");
-            $delete_wishlist->execute([$name, $user_id]);
-         }
-
-         $insert_cart = $conn->prepare("INSERT INTO `cart`(user_id, pid, name, price, quantity, image) VALUES(?,?,?,?,?,?)");
-         $insert_cart->execute([$user_id, $pid, $name, $price, $qty, $image]);
-         $message[] = 'added to cart!';
+         $insert_cart = $conn->prepare("INSERT INTO `sepet`(user_id, urun_id, isim, fiyat, adet, resim) VALUES(?,?,?,?,?,?)");
+         $insert_cart->execute([$user_id, $urun_id, $isim, $fiyat, $adet, $resim]);
+         $message[] = 'Sepete eklendi!';
          
       }
 
    }
-
-}
 
 ?>

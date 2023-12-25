@@ -12,24 +12,24 @@ if(isset($_SESSION['user_id'])){
 
 if(isset($_POST['send'])){
 
-   $name = $_POST['name'];
-   $name = filter_var($name, FILTER_SANITIZE_STRING);
+   $isim = $_POST['isim'];
+   $isim = filter_var($isim, FILTER_SANITIZE_STRING);
    $email = $_POST['email'];
    $email = filter_var($email, FILTER_SANITIZE_STRING);
-   $number = $_POST['number'];
-   $number = filter_var($number, FILTER_SANITIZE_STRING);
-   $msg = $_POST['msg'];
-   $msg = filter_var($msg, FILTER_SANITIZE_STRING);
+   $numara = $_POST['numara'];
+   $numara = filter_var($numara, FILTER_SANITIZE_STRING);
+   $mesaj = $_POST['mesaj'];
+   $mesaj = filter_var($mesaj, FILTER_SANITIZE_STRING);
 
-   $select_message = $conn->prepare("SELECT * FROM `messages` WHERE name = ? AND email = ? AND number = ? AND message = ?");
-   $select_message->execute([$name, $email, $number, $msg]);
+   $select_message = $conn->prepare("SELECT * FROM `mesajlar` WHERE isim = ? AND email = ? AND numara = ? AND message = ?");
+   $select_message->execute([$isim, $email, $numara, $mesaj]);
 
    if($select_message->rowCount() > 0){
 
    }else{
 
-      $insert_message = $conn->prepare("INSERT INTO `messages`(user_id, name, email, number, message) VALUES(?,?,?,?,?)");
-      $insert_message->execute([$user_id, $name, $email, $number, $msg]);
+      $insert_message = $conn->prepare("INSERT INTO `mesajlar`(user_id, isim, email, numara, message) VALUES(?,?,?,?,?)");
+      $insert_message->execute([$user_id, $isim, $email, $numara, $mesaj]);
 
       $message[] = 'Mesajınız başarıyla gönderilmiştir!';
 

@@ -13,28 +13,28 @@ if(isset($_SESSION['user_id'])){
 
 if(isset($_POST['order'])){
 
-   $name = $_POST['name'];
-   $name = filter_var($name, FILTER_SANITIZE_STRING);
-   $number = $_POST['number'];
-   $number = filter_var($number, FILTER_SANITIZE_STRING);
+   $isim = $_POST['isim'];
+   $isim = filter_var($isim, FILTER_SANITIZE_STRING);
+   $numara = $_POST['numara'];
+   $numara = filter_var($numara, FILTER_SANITIZE_STRING);
    $email = $_POST['email'];
    $email = filter_var($email, FILTER_SANITIZE_STRING);
-   $method = $_POST['method'];
-   $method = filter_var($method, FILTER_SANITIZE_STRING);
-   $address = ''. $_POST['street'] .', '. $_POST['city'] .', '. $_POST['state'] .', '. $_POST['country'] .'  '. $_POST['pin_code'];
-   $address = filter_var($address, FILTER_SANITIZE_STRING);
-   $total_products = $_POST['total_products'];
-   $total_price = $_POST['total_price'];
+   $odeme_yontemi = $_POST['odeme_yontemi'];
+   $odeme_yontemi = filter_var($odeme_yontemi, FILTER_SANITIZE_STRING);
+   $adres = ''. $_POST['street'] .', '. $_POST['city'] .', '. $_POST['state'] .', '. $_POST['country'] .' ';
+   $adres = filter_var($adres, FILTER_SANITIZE_STRING);
+   $toplam_urun = $_POST['toplam_urun'];
+   $toplam_ucret = $_POST['toplam_ucret'];
 
-   $check_cart = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
+   $check_cart = $conn->prepare("SELECT * FROM `sepet` WHERE user_id = ?");
    $check_cart->execute([$user_id]);
 
    if($check_cart->rowCount() > 0){
 
-      $insert_order = $conn->prepare("INSERT INTO `orders`(user_id, name, number, email, method, address, total_products, total_price) VALUES(?,?,?,?,?,?,?,?)");
-      $insert_order->execute([$user_id, $name, $number, $email, $method, $address, $total_products, $total_price]);
+      $insert_order = $conn->prepare("INSERT INTO `orders`(user_id, isim, numara, email, odeme_yontemi, adres, toplam_urun, toplam_ucret) VALUES(?,?,?,?,?,?,?,?)");
+      $insert_order->execute([$user_id, $isim, $numara, $email, $odeme_yontemi, $adres, $toplam_urun, $toplam_ucret]);
 
-      $delete_cart = $conn->prepare("DELETE FROM `cart` WHERE user_id = ?");
+      $delete_cart = $conn->prepare("DELETE FROM `sepet` WHERE user_id = ?");
       $delete_cart->execute([$user_id]);
 
       $message[] = 'Siparişiniz başarıyla verildi!';
@@ -75,23 +75,23 @@ if(isset($_POST['order'])){
       <?php
          $grand_total = 0;
          $cart_items[] = '';
-         $select_cart = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
+         $select_cart = $conn->prepare("SELECT * FROM `sepet` WHERE user_id = ?");
          $select_cart->execute([$user_id]);
          if($select_cart->rowCount() > 0){
             while($fetch_cart = $select_cart->fetch(PDO::FETCH_ASSOC)){
-               $cart_items[] = $fetch_cart['name'].' ('.$fetch_cart['price'].' x '. $fetch_cart['quantity'].') - ';
-               $total_products = implode($cart_items);
-               $grand_total += ($fetch_cart['price'] * $fetch_cart['quantity']);
+               $cart_items[] = $fetch_cart['isim'].' ('.$fetch_cart['fiyat'].' x '. $fetch_cart['adet'].') - ';
+               $toplam_urun = implode($cart_items);
+               $grand_total += ($fetch_cart['fiyat'] * $fetch_cart['adet']);
       ?>
-         <p> <?= $fetch_cart['name']; ?> <span>(<?= ''.$fetch_cart['price'].'TL x '. $fetch_cart['quantity']; ?>)</span> </p>
+         <p> <?= $fetch_cart['isim']; ?> <span>(<?= ''.$fetch_cart['fiyat'].'TL x '. $fetch_cart['adet']; ?>)</span> </p>
       <?php
             }
          }else{
             echo '<p class="empty">Sepetinizde henüz ürün bulunmamaktadır!</p>';
          }
       ?>
-         <input type="hidden" name="total_products" value="<?= $total_products; ?>">
-         <input type="hidden" name="total_price" value="<?= $grand_total; ?>" value="">
+         <input type="hidden" name="toplam_urun" value="<?= $toplam_urun; ?>">
+         <input type="hidden" name="toplam_ucret" value="<?= $grand_total; ?>" value="">
          <div class="grand-total">Genel Toplam : <span><?= $grand_total; ?>TL</span></div>
       </div>
 
@@ -100,11 +100,11 @@ if(isset($_POST['order'])){
       <div class="flex">
          <div class="inputBox">
             <span>Ad Soyad :</span>
-            <input type="text" name="name" placeholder="Ad ve Soyad girin" class="box" maxlength="20" required>
+            <input type="text" name="isim" placeholder="Ad ve Soyad girin" class="box" maxlength="20" required>
          </div>
          <div class="inputBox">
             <span>Telefon Numarası :</span>
-            <input type="number" name="number" placeholder="Telefon numaranızı girin" class="box" min="0" max="9999999999" onkeypress="if(this.value.length == 10) return false;" required>
+            <input type="number" name="numara" placeholder="Telefon numaranızı girin" class="box" min="0" max="9999999999" onkeypress="if(this.value.length == 10) return false;" required>
          </div>
          <div class="inputBox">
             <span>Email Adresi :</span>
@@ -112,7 +112,7 @@ if(isset($_POST['order'])){
          </div>
          <div class="inputBox">
             <span>Ödeme Tipi :</span>
-            <select name="method" class="box" required>
+            <select name="odeme_yontemi" class="box" required>
                <option value="Kapıda Ödeme">Kapıda Ödeme</option>
                <option value="Kredi Kartı">Kredi Kartı</option>
             </select>
@@ -136,18 +136,6 @@ if(isset($_POST['order'])){
    </form>
 
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
 
 <?php include 'temelbolumler/footer.php'; ?>
 

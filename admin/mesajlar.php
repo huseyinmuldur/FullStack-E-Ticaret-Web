@@ -43,17 +43,17 @@ if(isset($_GET['delete'])){
 <div class="box-container">
 
    <?php
-      $select_messages = $conn->prepare("SELECT * FROM `messages`");
+      $select_messages = $conn->prepare("SELECT * FROM `mesajlar`");
       $select_messages->execute();
       if($select_messages->rowCount() > 0){
          while($fetch_message = $select_messages->fetch(PDO::FETCH_ASSOC)){
    ?>
    <div class="box">
    <p> Kullanıcı id : <span><?= $fetch_message['user_id']; ?></span></p>
-   <p> İsim : <span><?= $fetch_message['name']; ?></span></p>
+   <p> İsim : <span><?= $fetch_message['iism']; ?></span></p>
    <p> Email : <span><?= $fetch_message['email']; ?></span></p>
-   <p> Numara : <span><?= $fetch_message['number']; ?></span></p>
-   <p> Mesaj : <span><?= $fetch_message['message']; ?></span></p>
+   <p> Numara : <span><?= $fetch_message['numara']; ?></span></p>
+   <p> Mesaj : <span><?= $fetch_message['mesaj']; ?></span></p>
    <a href="mesajlar.php??delete=<?= $fetch_message['id']; ?>" onclick="return confirm('Mesaj Silinsin Mi?');" class="delete-btn">delete</a>
    </div>
    <?php

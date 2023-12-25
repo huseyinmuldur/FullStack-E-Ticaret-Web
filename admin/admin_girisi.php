@@ -6,18 +6,18 @@ session_start();
 
 if(isset($_POST['submit'])){
 
-   $name = $_POST['name'];
-   $name = filter_var($name, FILTER_SANITIZE_STRING);
-   $pass = sha1($_POST['pass']);
-   $pass = filter_var($pass, FILTER_SANITIZE_STRING);
+   $isim = $_POST['isim'];
+   $isim = filter_var($isim, FILTER_SANITIZE_STRING);
+   $sifre = sha1($_POST['sifre']);
+   $sifre = filter_var($sifre, FILTER_SANITIZE_STRING);
 
-   $select_admin = $conn->prepare("SELECT * FROM `admins` WHERE name = ? AND password = ?");
-   $select_admin->execute([$name, $pass]);
+   $select_admin = $conn->prepare("SELECT * FROM `adminler` WHERE isim = ? AND sifre = ?");
+   $select_admin->execute([$isim, $sifre]);
    $row = $select_admin->fetch(PDO::FETCH_ASSOC);
 
    if($select_admin->rowCount() > 0){
       $_SESSION['admin_id'] = $row['id'];
-      header('location:gosterg_paneli.php');
+      header('location:gosterge_paneli.php');
    }else{
       $message[] = 'Yanlış kullanıcı adı veya parola!';
    }
@@ -43,8 +43,8 @@ if(isset($_POST['submit'])){
 <?php include '../temelbolumler/admin_header.php'; ?>
 
 <?php
-   if(isset($message)){
-      foreach($message as $message){
+   if(isset($mesajlar)){
+      foreach($message as $mesajlar){
          echo '
          <div class="message">
             <span>'.$message.'</span>
@@ -60,8 +60,8 @@ if(isset($_POST['submit'])){
    <form action="" method="post">
       <h3>Şimdi Giriş Yap</h3>
       <p>Varsayılan Kullanıcı Adı = <span>admin</span> & Şifre = <span>111</span></p>
-      <input type="text" name="name" required placeholder="Kullanıcı adınızı girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
-      <input type="password" name="pass" required placeholder="Şifrenizi girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
+      <input type="text" name="isim" required placeholder="Kullanıcı adınızı girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
+      <input type="password" name="sifre" required placeholder="Şifrenizi girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
       <input type="submit" value="Şimdi Giriş Yap" class="btn" name="submit">
    </form>
 

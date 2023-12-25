@@ -38,35 +38,35 @@ include 'temelbolumler/sepet.php';
    <h1 class="heading">DETAYLI GÖRÜNÜM</h1>
 
    <?php
-     $pid = $_GET['pid'];
-     $select_products = $conn->prepare("SELECT * FROM `products` WHERE id = ?"); 
-     $select_products->execute([$pid]);
+     $urun_id = $_GET['urun_id'];
+     $select_products = $conn->prepare("SELECT * FROM `urunler` WHERE id = ?"); 
+     $select_products->execute([$urun_id]);
      if($select_products->rowCount() > 0){
       while($fetch_product = $select_products->fetch(PDO::FETCH_ASSOC)){
    ?>
    <form action="" method="post" class="box">
-      <input type="hidden" name="pid" value="<?= $fetch_product['id']; ?>">
-      <input type="hidden" name="name" value="<?= $fetch_product['name']; ?>">
-      <input type="hidden" name="price" value="<?= $fetch_product['price']; ?>">
-      <input type="hidden" name="image" value="<?= $fetch_product['image_01']; ?>">
+      <input type="hidden" name="urun_id" value="<?= $fetch_product['id']; ?>">
+      <input type="hidden" name="isim" value="<?= $fetch_product['isim']; ?>">
+      <input type="hidden" name="fiyat" value="<?= $fetch_product['fiyat']; ?>">
+      <input type="hidden" name="resim" value="<?= $fetch_product['resim1']; ?>">
       <div class="row">
          <div class="image-container">
             <div class="main-image">
-               <img src="uploaded_img/<?= $fetch_product['image_01']; ?>" alt="">
+               <img src="uploaded_img/<?= $fetch_product['resim1']; ?>" alt="">
             </div>
             <div class="sub-image">
-               <img src="uploaded_img/<?= $fetch_product['image_01']; ?>" alt="">
-               <img src="uploaded_img/<?= $fetch_product['image_02']; ?>" alt="">
-               <img src="uploaded_img/<?= $fetch_product['image_03']; ?>" alt="">
+               <img src="uploaded_img/<?= $fetch_product['resim1']; ?>" alt="">
+               <img src="uploaded_img/<?= $fetch_product['resim2']; ?>" alt="">
+               <img src="uploaded_img/<?= $fetch_product['resim3']; ?>" alt="">
             </div>
          </div>
          <div class="content">
-            <div class="name"><?= $fetch_product['name']; ?></div>
+            <div class="name"><?= $fetch_product['isim']; ?></div>
             <div class="flex">
-               <div class="price"><span></span><?= $fetch_product['price']; ?><span>TL</span></div>
-               <input type="number" name="qty" class="qty" min="1" max="99" onkeypress="if(this.value.length == 2) return false;" value="1">
+               <div class="fiyat"><span></span><?= $fetch_product['fiyat']; ?><span>TL</span></div>
+               <input type="number" name="adet" class="qty" min="1" max="99" onkeypress="if(this.value.length == 2) return false;" value="1">
             </div>
-            <div class="details"><?= $fetch_product['details']; ?></div>
+            <div class="detaylar"><?= $fetch_product['detaylar']; ?></div>
             <div class="flex-btn">
                <input type="submit" value="Sepete Ekle" class="btn" name="add_to_cart">
                <input class="option-btn" type="submit" name="add_to_wishlist" value="Favorilere Ekle">

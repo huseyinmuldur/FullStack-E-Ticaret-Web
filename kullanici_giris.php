@@ -14,11 +14,11 @@ if(isset($_POST['submit'])){
 
    $email = $_POST['email'];
    $email = filter_var($email, FILTER_SANITIZE_STRING);
-   $pass = sha1($_POST['pass']);
-   $pass = filter_var($pass, FILTER_SANITIZE_STRING);
+   $sifre = sha1($_POST['sifre']);
+   $sifre = filter_var($sifre, FILTER_SANITIZE_STRING);
 
-   $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ? AND password = ?");
-   $select_user->execute([$email, $pass]);
+   $select_user = $conn->prepare("SELECT * FROM `kullanicilar` WHERE email = ? AND sifre = ?");
+   $select_user->execute([$email, $sifre]);
    $row = $select_user->fetch(PDO::FETCH_ASSOC);
 
    if($select_user->rowCount() > 0){
@@ -56,7 +56,7 @@ if(isset($_POST['submit'])){
    <form action="" method="post">
       <h3>GİRİŞ YAPMA</h3>
       <input type="email" name="email" required placeholder="Email adresinizi girin" maxlength="50"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
-      <input type="password" name="pass" required placeholder="Şifrenizi girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
+      <input type="password" name="sifre" required placeholder="Şifrenizi girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
       <input type="submit" value="Giriş Yap" class="btn" name="submit">
       <p>Hesabınız yok mu?</p>
       <a href="kullanici_kayit.php" class="option-btn">Kayıt Ol</a>

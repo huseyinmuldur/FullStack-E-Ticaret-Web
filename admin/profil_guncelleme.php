@@ -12,13 +12,13 @@ if(!isset($admin_id)){
 
 if(isset($_POST['submit'])){
 
-   $name = $_POST['name'];
-   $name = filter_var($name, FILTER_SANITIZE_STRING);
+   $isim = $_POST['isim'];
+   $isim = filter_var($isim, FILTER_SANITIZE_STRING);
 
-   $update_profile_name = $conn->prepare("UPDATE `admins` SET name = ? WHERE id = ?");
-   $update_profile_name->execute([$name, $admin_id]);
+   $update_profile_name = $conn->prepare("UPDATE `admins` SET isim = ? WHERE id = ?");
+   $update_profile_name->execute([$isim, $admin_id]);
 
-   $empty_pass = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
+   $empty_pass = '';
    $prev_pass = $_POST['prev_pass'];
    $old_pass = sha1($_POST['old_pass']);
    $old_pass = filter_var($old_pass, FILTER_SANITIZE_STRING);
@@ -35,7 +35,7 @@ if(isset($_POST['submit'])){
       $message[] = 'Şifreler eşleşmiyor!';
    }else{
       if($new_pass != $empty_pass){
-         $update_admin_pass = $conn->prepare("UPDATE `admins` SET password = ? WHERE id = ?");
+         $update_admin_pass = $conn->prepare("UPDATE `adminler` SET sifre = ? WHERE id = ?");
          $update_admin_pass->execute([$confirm_pass, $admin_id]);
          $message[] = 'Şifreniz başarıyla güncellendi!';
       }else{
@@ -68,8 +68,8 @@ if(isset($_POST['submit'])){
 
    <form action="" method="post">
       <h3>PROFİLİ GÜNCELLE</h3>
-      <input type="hidden" name="prev_pass" value="<?= $fetch_profile['password']; ?>">
-      <input type="text" name="name" value="<?= $fetch_profile['name']; ?>" required placeholder="Kullanıcı adınızı girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
+      <input type="hidden" name="prev_pass" value="<?= $fetch_profile['sifre']; ?>">
+      <input type="text" name="name" value="<?= $fetch_profile['isim']; ?>" required placeholder="Kullanıcı adınızı girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
       <input type="password" name="old_pass" placeholder="Eski şifreyi girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
       <input type="password" name="new_pass" placeholder="Yeni şifreyi girin" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
       <input type="password" name="confirm_pass" placeholder="Yeni şifreyi tekrar gir" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">

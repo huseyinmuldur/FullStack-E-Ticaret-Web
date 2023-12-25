@@ -41,20 +41,20 @@ if(isset($_SESSION['user_id'])){
       if($user_id == ''){
          echo '<p class="empty">Siparişlerinizi görmek için lütfen giriş yapın</p>';
       }else{
-         $select_orders = $conn->prepare("SELECT * FROM `orders` WHERE user_id = ?");
+         $select_orders = $conn->prepare("SELECT * FROM `siparisler` WHERE user_id = ?");
          $select_orders->execute([$user_id]);
          if($select_orders->rowCount() > 0){
             while($fetch_orders = $select_orders->fetch(PDO::FETCH_ASSOC)){
    ?>
    <div class="box">
-      <p>Sipariş tarihi : <span><?= $fetch_orders['placed_on']; ?></span></p>
-      <p>Ad Soyad : <span><?= $fetch_orders['name']; ?></span></p>
+      <p>Sipariş tarihi : <span><?= $fetch_orders['siparis_tarihi']; ?></span></p>
+      <p>Ad Soyad : <span><?= $fetch_orders['isim']; ?></span></p>
       <p>Email Adresi: <span><?= $fetch_orders['email']; ?></span></p>
-      <p>Telefon Numarası : <span><?= $fetch_orders['number']; ?></span></p>
-      <p>Adres : <span><?= $fetch_orders['address']; ?></span></p>
-      <p>Ödeme Tipi : <span><?= $fetch_orders['method']; ?></span></p>
-      <p>Siparişlerin : <span><?= $fetch_orders['total_products']; ?></span></p>
-      <p>Toplam ücret : <span><?= $fetch_orders['total_price']; ?>TL</span></p>
+      <p>Telefon Numarası : <span><?= $fetch_orders['numara']; ?></span></p>
+      <p>Adres : <span><?= $fetch_orders['adres']; ?></span></p>
+      <p>Ödeme Tipi : <span><?= $fetch_orders['odeme_yontemi']; ?></span></p>
+      <p>Siparişlerin : <span><?= $fetch_orders['toplam_urun']; ?></span></p>
+      <p>Toplam ücret : <span><?= $fetch_orders['toplam_ucret']; ?>TL</span></p>
       <p> Ödeme durumu : <span style="color: red;">Beklemede</span> </p>
    </div>
    <?php

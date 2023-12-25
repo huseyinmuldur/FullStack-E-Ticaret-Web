@@ -12,16 +12,14 @@ if(!isset($admin_id)){
 
 if(isset($_GET['delete'])){
    $delete_id = $_GET['delete'];
-   $delete_user = $conn->prepare("DELETE FROM `users` WHERE id = ?");
+   $delete_user = $conn->prepare("DELETE FROM `kullanicilar` WHERE id = ?");
    $delete_user->execute([$delete_id]);
-   $delete_orders = $conn->prepare("DELETE FROM `orders` WHERE user_id = ?");
+   $delete_orders = $conn->prepare("DELETE FROM `urunler` WHERE user_id = ?");
    $delete_orders->execute([$delete_id]);
-   $delete_messages = $conn->prepare("DELETE FROM `messages` WHERE user_id = ?");
+   $delete_messages = $conn->prepare("DELETE FROM `mesajlar` WHERE user_id = ?");
    $delete_messages->execute([$delete_id]);
-   $delete_cart = $conn->prepare("DELETE FROM `cart` WHERE user_id = ?");
+   $delete_cart = $conn->prepare("DELETE FROM `sepet` WHERE user_id = ?");
    $delete_cart->execute([$delete_id]);
-   $delete_wishlist = $conn->prepare("DELETE FROM `wishlist` WHERE user_id = ?");
-   $delete_wishlist->execute([$delete_id]);
    header('location:kullanicilar.php');
 }
 
@@ -51,14 +49,14 @@ if(isset($_GET['delete'])){
    <div class="box-container">
 
    <?php
-      $select_accounts = $conn->prepare("SELECT * FROM `users`");
+      $select_accounts = $conn->prepare("SELECT * FROM `kullanicilar`");
       $select_accounts->execute();
       if($select_accounts->rowCount() > 0){
          while($fetch_accounts = $select_accounts->fetch(PDO::FETCH_ASSOC)){   
    ?>
    <div class="box">
       <p> Kullanıcı id : <span><?= $fetch_accounts['id']; ?></span> </p>
-      <p> Kullanıcı Adı : <span><?= $fetch_accounts['name']; ?></span> </p>
+      <p> Kullanıcı Adı : <span><?= $fetch_accounts['isim']; ?></span> </p>
       <p> Email : <span><?= $fetch_accounts['email']; ?></span> </p>
       <a href="kullanicilar.php?delete=<?= $fetch_accounts['id']; ?>" onclick="return confirm('Bu hesap silinsin mi? Kullanıcıyla ilgili tüm bilgiler de silinecektir!')" class="delete-btn">Sil</a>
    </div>
@@ -72,16 +70,6 @@ if(isset($_GET['delete'])){
    </div>
 
 </section>
-
-
-
-
-
-
-
-
-
-
 
 
 <script src="../js/admin_script.js"></script>
